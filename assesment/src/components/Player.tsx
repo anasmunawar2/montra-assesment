@@ -7,9 +7,28 @@ import Zoom from "../assets/slider-zoom.svg";
 import Back from "../assets/backward.svg";
 import Next from "../assets/forward.svg";
 import Pause from "../assets/pause.svg";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Player = () => {
+  const [numberOfMarkers, setNumberOfMarkers] = useState(22);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        // sm breakpoint
+        setNumberOfMarkers(11);
+      } else if (window.innerWidth < 1024) {
+        // md breakpoint
+        setNumberOfMarkers(16);
+      } else {
+        setNumberOfMarkers(22);
+      }
+    };
+
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     <div className="w-full bg-white">
       <div className="flex items-center justify-between px-4 py-2 border-b">
@@ -33,23 +52,26 @@ const Player = () => {
           />
         </div>
 
-        <div className="flex-1 flex justify-end space-x-2 sm:space-x-4">
+        <div className="flex-1 flex justify-end space-x-2 mr-3 sm:space-x-4">
           <Trash2 className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 hover:text-gray-900 cursor-pointer" />
           <Scissors className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 hover:text-gray-900 cursor-pointer" />
         </div>
       </div>
 
-      <div className="flex justify-between font-normal bg-disabled text-xs text-muted-normal border-b py-3 mb-1">
-        {Array.from({ length: 22 }).map((_, i) => (
-          <div
-            key={i}
-            className={`flex-1 text-center ${
-              i < 21 ? "border-r" : ""
-            } border-muted h-3`}
-          >
-            {String(i).padStart(2, "0")}:{String(0).padStart(2, "0")}
-          </div>
-        ))}
+      <div className="flex justify-between font-normal bg-disabled text-[10px] sm:text-xs text-muted-normal border-b py-2 sm:py-3 mb-1 min-w-max">
+        {Array.from({ length: numberOfMarkers }).map((_, i) => {
+          const minutes = Math.floor(i * (22 / numberOfMarkers) * 2);
+          return (
+            <div
+              key={i}
+              className={`flex-none text-center px-2 sm:px-3 ${
+                i < numberOfMarkers - 1 ? "border-r" : ""
+              } border-muted h-3`}
+            >
+              {String(minutes).padStart(2, "0")}:{String(0).padStart(2, "0")}
+            </div>
+          );
+        })}
       </div>
 
       <div className="p-4">

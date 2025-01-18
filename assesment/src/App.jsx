@@ -23,10 +23,9 @@ import Shadow from "./assets/blur.svg";
 
 import { ChevronDown, ChevronLeft, MenuIcon, Plus, X } from "lucide-react";
 import Player from "./components/Player";
-
 function ToolbarItem({ icon, label, rightIcon = <ChevronDown /> }) {
   return (
-    <div className="flex overflow-hidden gap-1.5 justify-center items-center self-stretch px-2 py-2 my-auto rounded-md min-h-[1.75rem] ">
+    <div className="flex overflow-hidden gap-1.5 justify-center items-center self-stretch px-2 py-2 my-auto rounded-md min-h-[1.75rem]">
       <div className="flex overflow-hidden flex-col justify-center self-stretch px-px py-1 my-auto w-4">
         {typeof icon === "string" ? (
           <img
@@ -48,9 +47,83 @@ function ToolbarItem({ icon, label, rightIcon = <ChevronDown /> }) {
   );
 }
 
-function Divider() {
-  return <div className="flex shrink-0 self-stretch w-px h-8 bg-muted mt-2" />;
-}
+const MobileMenu = ({ onClose }) => (
+  <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
+    <div className="bg-white h-full w-64 p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-medium">Menu</h2>
+        <button onClick={onClose}>
+          <X className="w-6 h-6" />
+        </button>
+      </div>
+      <div className="grid gap-4">
+        {toolbarItems.map((item) => (
+          <button
+            key={item.label}
+            className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-lg"
+          >
+            {item.icon}
+            <span>{item.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+const MobileSettings = ({ onClose }) => (
+  <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
+    <div className="bg-white h-full w-full max-w-md ml-auto p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-medium">Settings</h2>
+        <button onClick={onClose}>
+          <X className="w-6 h-6" />
+        </button>
+      </div>
+
+      {/* Upload Section */}
+      <div className="mb-4">
+        <h3 className="text-sm font-medium mb-2">Upload Media</h3>
+        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+          <img src={UploadIcon} className="mx-auto mb-2" alt="upload" />
+          <p className="text-sm">
+            Drag and drop or
+            <br />
+            <span className="text-blue-600">browse files</span>
+          </p>
+        </div>
+      </div>
+
+      {/* Media Navigation */}
+      <div className="flex space-x-4 mb-4 overflow-x-auto p-2 bg-gray-50 rounded-lg">
+        {["Images", "Video", "Logo", "Unsplash"].map((item) => (
+          <button
+            key={item}
+            className="px-3 py-1 whitespace-nowrap hover:bg-white hover:shadow-sm rounded-full"
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+
+      {/* Media Grid */}
+      <div className="grid grid-cols-2 gap-2">
+        {[...Array(6)].map((_, index) => (
+          <div
+            key={index}
+            className="aspect-video bg-gray-100 rounded-lg overflow-hidden"
+          >
+            <img
+              src={index % 2 === 0 ? Forest : Building}
+              alt={`Media ${index + 1}`}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
 
 const toolbarItems = [
   {
@@ -95,22 +168,43 @@ const toolbarItems = [
   },
 ];
 
+const Sidebar = () => (
+  <div className="w-[7.625rem] bg-disabled flex-shrink-0 border-r h-full overflow-y-auto">
+    <div className="p-2 space-y-2">
+      <div className="relative group">
+        <div className="aspect-video bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer">
+          <img
+            src={SideImageOne}
+            alt="Image1"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="aspect-video bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer mt-2">
+          <img
+            src={SideImageTwo}
+            alt="Image2"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="aspect-video bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer mt-2">
+          <img
+            src={SideImageThree}
+            alt="Image3"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+      <button className="w-full shadow-sm border border-muted-secondary bg-white rounded-lg flex items-center justify-center p-2 hover:bg-muted">
+        <Plus className="text-muted-primary" size={15} />
+      </button>
+    </div>
+  </div>
+);
+
 const App = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(true); // Changed default to true since panel is initially visible
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isSettingsPanelVisible, setIsSettingsPanelVisible] = useState(true);
-
-  const MobileMenu = () => (
-    <div className="fixed inset-0  lg:hidden">
-      {/* Mobile menu content remains the same */}
-    </div>
-  );
-
-  const MobileSettings = () => (
-    <div className="fixed inset-0  z-50 lg:hidden">
-      {/* Mobile settings content remains the same */}
-    </div>
-  );
 
   const openSettingsPanel = () => {
     setIsSettingsPanelVisible(true);
@@ -121,236 +215,238 @@ const App = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-white">
-      {/* Mobile Menus */}
-      {isMobileMenuOpen && <MobileMenu />}
-      {isSettingsOpen && <MobileSettings />}
+    <>
+      <div className="flex flex-col h-screen bg-white">
+        {/* Mobile Menus */}
+        {isMobileMenuOpen && (
+          <MobileMenu onClose={() => setIsMobileMenuOpen(false)} />
+        )}
+        {isSettingsOpen && (
+          <MobileSettings onClose={() => setIsSettingsOpen(false)} />
+        )}
 
-      {/* Top Navigation */}
-      <div className="flex items-center justify-between p-4 border-b border-muted">
-        {/* Left Section */}
-        <div className="flex items-center flex-1 space-x-4">
-          <button className="flex items-center font-medium text-black text-xl bg-white border border-muted px-4 py-2 shadow-md rounded-lg hover:text-gray-900">
-            <ChevronLeft className="w-5 h-5" />
-            <span className="ml-2 hidden sm:inline">Back</span>
-          </button>
-        </div>
+        {/* Top Navigation */}
+        <div className="flex items-center justify-between p-2 sm:p-4 border-b border-muted">
+          <div className="flex items-center flex-1 space-x-2 sm:space-x-4">
+            <button className="flex items-center font-medium text-black text-base sm:text-xl bg-white border border-muted px-2 sm:px-4 py-1 sm:py-2 shadow-md rounded-lg">
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="ml-1 sm:ml-2 hidden sm:inline">Back</span>
+            </button>
+          </div>
 
-        {/* Center Section */}
-        <div className="flex text-center items-center">
-          <img src={StarterIcon} alt="image" />
-          <h1 className="text-lg sm:text-xl font-medium text-black">
-            Starter Project
-          </h1>
-        </div>
+          <div className="flex items-center">
+            <img
+              src={StarterIcon}
+              alt="starter"
+              className="w-6 h-6 sm:w-8 sm:h-8"
+            />
+            <h1 className="text-base sm:text-xl font-medium text-black ml-2">
+              Starter Project
+            </h1>
+          </div>
 
-        {/* Right Section */}
-        <div className="flex items-center flex-1 justify-end space-x-4">
-          <button
-            className="lg:hidden"
-            onClick={() => setIsMobileMenuOpen(true)}
-          >
-            <MenuIcon className="w-6 h-6" />
-          </button>
-          <button className="">
-            <img src={Avatar} alt="avatar" />
-          </button>
-          <button className="px-3 sm:px-4 py-2 bg-primary font-medium text-md text-white rounded-xl hover:bg-blue-700">
-            Export
-          </button>
-        </div>
-      </div>
-
-      {/* Main Content Area */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Left Sidebar - Thumbnails */}
-        <div className="hidden lg:block w-[7.625rem] bg-disabled p-2 flex-shrink-0 border-r">
-          <div className="space-y-2">
-            <div className="relative group">
-              <div className="aspect-video bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer">
-                <img
-                  src={SideImageOne}
-                  alt="Image1"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="aspect-video bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer mt-2">
-                <img
-                  src={SideImageTwo}
-                  alt="Image2"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="aspect-video bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer mt-2">
-                <img
-                  src={SideImageThree}
-                  alt="Image3"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-            <button className="w-full shadow-sm border border-muted-secondary bg-white rounded-lg flex items-center justify-center p-2 hover:bg-muted ">
-              <Plus className="text-muted-primary " size={15} />
+          <div className="flex items-center flex-1 justify-end space-x-2 sm:space-x-4">
+            <button
+              className="lg:hidden p-1"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <MenuIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+            <button className="p-1">
+              <img
+                src={Avatar}
+                alt="avatar"
+                className="w-6 h-6 sm:w-12 sm:h-12"
+              />
+            </button>
+            <button className="px-2 sm:px-4 py-1 sm:py-2 bg-primary text-sm sm:text-base font-medium text-white rounded-xl">
+              Export
             </button>
           </div>
         </div>
 
-        {/* Center Content with Timeline Below */}
-        <div className="flex-1 flex flex-col">
-          {/* Main Editor */}
-          {/* editor bar start */}
-          <div className="flex flex-wrap gap-1 justify-center items-center px-1.5 bg-white border-b border-zinc-100">
-            {toolbarItems.map((item, index) => (
-              <React.Fragment key={item.label}>
-                <ToolbarItem icon={item.icon} label={item.label} />
-                {index < toolbarItems.length - 1 && <Divider />}
-              </React.Fragment>
-            ))}
-          </div>
-          {/* editor bar end */}
-          <div className="flex-1 overflow-hidden">
-            <img
-              src={MainContent}
-              alt="main-content"
-              className="w-full h-full object-contain"
-            />
+        {/* Main Content Area */}
+        <div className="flex flex-1 overflow-hidden">
+          {/* Left Sidebar - Hidden on mobile, shown in mobile menu */}
+          <div className="hidden lg:block">
+            <Sidebar />
           </div>
 
-          {/* Timeline */}
-          <div className=" border-t">
-            <Player />
+          {/* Main Editor Content */}
+          <div className="flex-1 flex flex-col pb-16 lg:pb-0">
+            {/* Editor bar */}
+            <div className="flex flex-wrap gap-1 justify-center items-center px-1.5 bg-white border-b border-zinc-100">
+              {toolbarItems.map((item, index) => (
+                <React.Fragment key={item.label}>
+                  <ToolbarItem icon={item.icon} label={item.label} />
+                  {index < toolbarItems.length - 1 && (
+                    <div className="flex shrink-0 self-stretch w-px h-8 bg-muted mt-2" />
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+
+            <div className="flex-1 overflow-hidden">
+              <img
+                src={MainContent}
+                alt="main-content"
+                className="w-full h-full object-contain"
+              />
+            </div>
+
+            <div className="border-t">
+              <Player />
+            </div>
           </div>
-        </div>
 
-        {/* Right Settings Panel */}
-        <div className="hidden lg:flex">
-          {/* Settings Panel Content */}
-          {isSettingsPanelVisible && (
-            <div className="w-80 bg-white border-l border-r border-muted">
-              <div className="flex justify-between items-center  mb-4 p-3 border-b border-muted">
-                <h2 className="text-lg text-muted-dark font-medium ">Media</h2>
-                <button
-                  className="text-gray-500 hover:text-gray-700"
-                  onClick={closeSettingsPanel}
-                >
-                  <X size={15} />
-                </button>
-              </div>
+          {/* Right Panel - Hidden on mobile */}
+          <div className="hidden lg:flex">
+            {/* Settings Panel Content */}
+            {isSettingsPanelVisible && (
+              <div className="w-80 bg-white border-l border-r border-muted">
+                <div className="flex justify-between items-center  mb-4 p-3 border-b border-muted">
+                  <h2 className="text-lg text-muted-dark font-medium ">
+                    Media
+                  </h2>
+                  <button
+                    className="text-gray-500 hover:text-gray-700"
+                    onClick={closeSettingsPanel}
+                  >
+                    <X size={15} />
+                  </button>
+                </div>
 
-              <div className="text-sm text-muted-normal font-medium mb-4 px-4 ">
-                Upload Media
-              </div>
+                <div className="text-sm text-muted-normal font-medium mb-4 px-4 ">
+                  Upload Media
+                </div>
 
-              {/* Upload Box */}
-              <div className="px-4 ">
-                <div className="border-2 bg-disabled border-dashed border-muted rounded-lg p-8 mb-4 text-center">
-                  <img
-                    src={UploadIcon}
-                    className="mx-auto mb-2 cursor-pointer"
-                    alt="upload"
-                  />
-                  <p className="text-xl font-medium text-muted-dark">
-                    Drag and drop File
-                    <br />
-                    or click to browse files
-                  </p>
+                {/* Upload Box */}
+                <div className="px-4 ">
+                  <div className="border-2 bg-disabled border-dashed border-muted rounded-lg p-8 mb-4 text-center">
+                    <img
+                      src={UploadIcon}
+                      className="mx-auto mb-2 cursor-pointer"
+                      alt="upload"
+                    />
+                    <p className="text-xl font-medium text-muted-dark">
+                      Drag and drop File
+                      <br />
+                      or click to browse files
+                    </p>
+                  </div>
+                </div>
+                {/* Navigation */}
+                <div className="flex space-x-6 mb-4 text-sm text-muted-normal font-medium bg-disabled p-4 border border-muted">
+                  <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
+                    Images
+                  </button>
+                  <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
+                    Video
+                  </button>
+                  <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
+                    Logo
+                  </button>
+                  <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
+                    Unsplash
+                  </button>
+                </div>
+
+                {/* Media Label */}
+                <div className="text-sm text-muted-normal font-medium mb-4 px-4">
+                  Media
+                </div>
+
+                {/* Media Grid */}
+                <div className="grid grid-cols-2 gap-2 px-4 pb-6 border-b">
+                  {[...Array(6)].map((_, index) => (
+                    <div
+                      key={index}
+                      className="aspect-video bg-gray-100 rounded-lg overflow-hidden"
+                    >
+                      {index % 2 === 0 ? (
+                        <img
+                          src={Forest}
+                          alt="Mountain landscape"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <img
+                          src={Building}
+                          alt="Modern architecture"
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
-              {/* Navigation */}
-              <div className="flex space-x-6 mb-4 text-sm text-muted-normal font-medium bg-disabled p-4 border border-muted">
-                <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
-                  Images
-                </button>
-                <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
-                  Video
-                </button>
-                <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
-                  Logo
-                </button>
-                <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
-                  Unsplash
-                </button>
-              </div>
+            )}
 
-              {/* Media Label */}
-              <div className="text-sm text-muted-normal font-medium mb-4 px-4">
-                Media
-              </div>
-
-              {/* Media Grid */}
-              <div className="grid grid-cols-2 gap-2 px-4 pb-6 border-b">
-                {[...Array(6)].map((_, index) => (
-                  <div
-                    key={index}
-                    className="aspect-video bg-gray-100 rounded-lg overflow-hidden"
-                  >
-                    {index % 2 === 0 ? (
-                      <img
-                        src={Forest}
-                        alt="Mountain landscape"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <img
-                        src={Building}
-                        alt="Modern architecture"
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
+            {/* Right Side Icons */}
+            <div className="flex flex-col space-y-2 p-2 bg-disabled">
+              <button
+                className="p-2 hover:bg-muted rounded"
+                onClick={openSettingsPanel}
+              >
+                <img src={File} alt="file" />
+              </button>
+              <button
+                className="p-2 hover:bg-muted rounded"
+                onClick={openSettingsPanel}
+              >
+                <img src={Layout} alt="layout" />
+              </button>
+              <button
+                className="p-2 hover:bg-muted rounded"
+                onClick={openSettingsPanel}
+              >
+                <img src={Record} alt="record" />
+              </button>
+              <button
+                className="p-2 hover:bg-muted rounded"
+                onClick={openSettingsPanel}
+              >
+                <img src={UploadCloud} alt="upload-cloud" />
+              </button>
+              <button
+                className="p-2 hover:bg-muted rounded"
+                onClick={openSettingsPanel}
+              >
+                <img src={Type} alt="type" />
+              </button>
+              <button
+                className="p-2 hover:bg-muted rounded"
+                onClick={openSettingsPanel}
+              >
+                <img src={CC} alt="cc" />
+              </button>
+              <button
+                className="p-2 hover:bg-muted rounded"
+                onClick={openSettingsPanel}
+              >
+                <img src={Music} alt="music" />
+              </button>
             </div>
-          )}
-
-          {/* Right Side Icons */}
-          <div className="flex flex-col space-y-2 p-2 bg-disabled">
-            <button
-              className="p-2 hover:bg-muted rounded"
-              onClick={openSettingsPanel}
-            >
-              <img src={File} alt="file" />
-            </button>
-            <button
-              className="p-2 hover:bg-muted rounded"
-              onClick={openSettingsPanel}
-            >
-              <img src={Layout} alt="layout" />
-            </button>
-            <button
-              className="p-2 hover:bg-muted rounded"
-              onClick={openSettingsPanel}
-            >
-              <img src={Record} alt="record" />
-            </button>
-            <button
-              className="p-2 hover:bg-muted rounded"
-              onClick={openSettingsPanel}
-            >
-              <img src={UploadCloud} alt="upload-cloud" />
-            </button>
-            <button
-              className="p-2 hover:bg-muted rounded"
-              onClick={openSettingsPanel}
-            >
-              <img src={Type} alt="type" />
-            </button>
-            <button
-              className="p-2 hover:bg-muted rounded"
-              onClick={openSettingsPanel}
-            >
-              <img src={CC} alt="cc" />
-            </button>
-            <button
-              className="p-2 hover:bg-muted rounded"
-              onClick={openSettingsPanel}
-            >
-              <img src={Music} alt="music" />
-            </button>
           </div>
         </div>
       </div>
-    </div>
+
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2">
+        <div className="flex justify-around">
+          {[File, Layout, Record, UploadCloud, Type, CC, Music].map(
+            (Icon, index) => (
+              <button
+                key={index}
+                className="p-2 hover:bg-gray-100 rounded"
+                onClick={() => setIsSettingsOpen(true)}
+              >
+                <img src={Icon} alt={`icon-${index}`} className="w-5 h-5" />
+              </button>
+            )
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 
