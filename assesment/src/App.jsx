@@ -292,6 +292,7 @@ const App = () => {
                 src={MainContent}
                 alt="main-content"
                 className="w-full h-full object-contain"
+                loading="lazy"
               />
             </div>
 
