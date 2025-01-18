@@ -32,7 +32,9 @@ const Player = () => {
   return (
     <div className="w-full bg-white">
       <div className="flex items-center justify-between px-4 py-2 border-b">
-        <div className="flex-1 text-base sm:text-lg text-left">08:32</div>
+        <div className="flex-1 text-base sm:text-lg md:text-left text-center">
+          08:32
+        </div>
 
         <div className="flex-1 flex justify-center space-x-2 sm:space-x-4">
           <img
@@ -52,7 +54,7 @@ const Player = () => {
           />
         </div>
 
-        <div className="flex-1 flex justify-end space-x-2 mr-3 sm:space-x-4">
+        <div className="flex-1 flex md:justify-end justify-center space-x-2 sm:space-x-4">
           <Trash2 className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 hover:text-gray-900 cursor-pointer" />
           <Scissors className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 hover:text-gray-900 cursor-pointer" />
         </div>
