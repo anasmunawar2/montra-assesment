@@ -440,7 +440,7 @@ const App = () => {
         </div>
       </div>
 
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2">
+      <div className="lg:hidden z-10 fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2">
         <div className="flex justify-around">
           {[File, Layout, Record, UploadCloud, Type, CC, Music].map(
             (Icon, index) => (
