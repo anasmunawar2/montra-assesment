@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 import SideImageOne from "./assets/sidebar-img-1.svg";
 import SideImageTwo from "./assets/sidebar-img-2.svg";
@@ -302,85 +303,93 @@ const App = () => {
           {/* Right Panel - Hidden on mobile */}
           <div className="hidden lg:flex">
             {/* Settings Panel Content */}
-            {isSettingsPanelVisible && (
-              <div className="w-80 bg-white border-l border-r border-muted">
-                <div className="flex justify-between items-center  mb-4 p-3 border-b border-muted">
-                  <h2 className="text-lg text-muted-dark font-medium ">
-                    Media
-                  </h2>
-                  <button
-                    className="text-gray-500 hover:text-gray-700"
-                    onClick={closeSettingsPanel}
-                  >
-                    <X size={15} />
-                  </button>
-                </div>
-
-                <div className="text-sm text-muted-normal font-medium mb-4 px-4 ">
-                  Upload Media
-                </div>
-
-                {/* Upload Box */}
-                <div className="px-4 ">
-                  <div className="border-2 bg-disabled border-dashed border-muted rounded-lg p-8 mb-4 text-center">
-                    <img
-                      src={UploadIcon}
-                      className="mx-auto mb-2 cursor-pointer"
-                      alt="upload"
-                    />
-                    <p className="text-xl font-medium text-muted-dark">
-                      Drag and drop File
-                      <br />
-                      or click to browse files
-                    </p>
-                  </div>
-                </div>
-                {/* Navigation */}
-                <div className="flex space-x-6 mb-4 text-sm text-muted-normal font-medium bg-disabled p-4 border border-muted">
-                  <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
-                    Images
-                  </button>
-                  <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
-                    Video
-                  </button>
-                  <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
-                    Logo
-                  </button>
-                  <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
-                    Unsplash
-                  </button>
-                </div>
-
-                {/* Media Label */}
-                <div className="text-sm text-muted-normal font-medium mb-4 px-4">
-                  Media
-                </div>
-
-                {/* Media Grid */}
-                <div className="grid grid-cols-2 gap-2 px-4 pb-6 border-b">
-                  {[...Array(6)].map((_, index) => (
-                    <div
-                      key={index}
-                      className="aspect-video bg-gray-100 rounded-lg overflow-hidden"
+            <AnimatePresence>
+              {isSettingsPanelVisible && (
+                <motion.div
+                  className="w-80 bg-white border-l border-r border-muted"
+                  initial={{ opacity: 0, x: 300 }} // Initial state: hidden and off to the right
+                  animate={{ opacity: 1, x: 0 }} // Final state: fully visible and in place
+                  exit={{ opacity: 0, x: 300 }} // State when closing: fade and slide out
+                  transition={{ duration: 0.3 }} // Duration of the transition
+                >
+                  <div className="flex justify-between items-center mb-4 p-3 border-b border-muted">
+                    <h2 className="text-lg text-muted-dark font-medium ">
+                      Media
+                    </h2>
+                    <button
+                      className="text-gray-500 hover:text-gray-700"
+                      onClick={closeSettingsPanel}
                     >
-                      {index % 2 === 0 ? (
-                        <img
-                          src={Forest}
-                          alt="Mountain landscape"
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <img
-                          src={Building}
-                          alt="Modern architecture"
-                          className="w-full h-full object-cover"
-                        />
-                      )}
+                      <X size={15} />
+                    </button>
+                  </div>
+
+                  <div className="text-sm text-muted-normal font-medium mb-4 px-4 ">
+                    Upload Media
+                  </div>
+
+                  {/* Upload Box */}
+                  <div className="px-4 ">
+                    <div className="border-2 bg-disabled border-dashed border-muted rounded-lg p-8 mb-4 text-center">
+                      <img
+                        src={UploadIcon}
+                        className="mx-auto mb-2 cursor-pointer"
+                        alt="upload"
+                      />
+                      <p className="text-xl font-medium text-muted-dark">
+                        Drag and drop File
+                        <br />
+                        or click to browse files
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
+                  </div>
+                  {/* Navigation */}
+                  <div className="flex space-x-6 mb-4 text-sm text-muted-normal font-medium bg-disabled p-4 border border-muted">
+                    <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
+                      Images
+                    </button>
+                    <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
+                      Video
+                    </button>
+                    <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
+                      Logo
+                    </button>
+                    <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
+                      Unsplash
+                    </button>
+                  </div>
+
+                  {/* Media Label */}
+                  <div className="text-sm text-muted-normal font-medium mb-4 px-4">
+                    Media
+                  </div>
+
+                  {/* Media Grid */}
+                  <div className="grid grid-cols-2 gap-2 px-4 pb-6 border-b">
+                    {[...Array(6)].map((_, index) => (
+                      <div
+                        key={index}
+                        className="aspect-video bg-gray-100 rounded-lg overflow-hidden"
+                      >
+                        {index % 2 === 0 ? (
+                          <img
+                            src={Forest}
+                            alt="Mountain landscape"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <img
+                            src={Building}
+                            alt="Modern architecture"
+                            className="w-full h-full object-cover"
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Right Side Icons */}
             <div className="flex flex-col space-y-2 p-2 bg-disabled">
