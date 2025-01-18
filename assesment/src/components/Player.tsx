@@ -138,8 +138,8 @@ const Player = () => {
             </div>
           </div>
 
-          <div className="absolute top-0 z-10" style={{ left: "10%" }}>
-            <img src={Indicator} alt="indicator" />
+          <div className="absolute top-0 z-10" style={{ left: "15%" }}>
+            <img src={Indicator} alt="indicator" className="h-48" />
           </div>
 
           <div className="absolute left-3 top-0">
