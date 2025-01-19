@@ -170,38 +170,60 @@ const toolbarItems = [
   },
 ];
 
-const Sidebar = () => (
-  <div className="w-[10rem] bg-disabled flex-shrink-0 border-r h-full overflow-y-auto">
-    <div className="p-2 space-y-4">
-      <div className="relative group">
-        <div className="aspect-video bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer">
-          <img
-            src={SideImageOne}
-            alt="Image1"
-            className="w-full h-full object-cover"
-          />
+const Sidebar = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleSelectImage = (image) => {
+    setSelectedImage(image);
+  };
+
+  return (
+    <div className="w-[10rem] bg-disabled flex-shrink-0 border-r h-full overflow-y-auto">
+      <div className="p-2 space-y-4">
+        <div className="relative group">
+          <div className="aspect-video bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer">
+            <img
+              src={SideImageOne}
+              alt="Image1"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div
+            className={`aspect-video bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer mt-2 ${
+              selectedImage === "Image2"
+                ? "border-2 border-primary p-[0.1rem]"
+                : ""
+            }`}
+            onClick={() => handleSelectImage("Image2")}
+          >
+            <img
+              src={SideImageTwo}
+              alt="Image2"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div
+            className={`aspect-video bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer mt-2 ${
+              selectedImage === "Image3"
+                ? "border-2 border-primary p-[0.1rem]"
+                : ""
+            }`}
+            onClick={() => handleSelectImage("Image3")}
+          >
+            <img
+              src={SideImageThree}
+              alt="Image3"
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
-        <div className="aspect-video bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer mt-2">
-          <img
-            src={SideImageTwo}
-            alt="Image2"
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="aspect-video bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer mt-2">
-          <img
-            src={SideImageThree}
-            alt="Image3"
-            className="w-full h-full object-cover"
-          />
-        </div>
+        <button className="w-full shadow-sm border border-muted-secondary bg-white rounded-lg flex items-center justify-center p-2 hover:bg-muted">
+          <Plus className="text-muted-primary" size={15} />
+        </button>
       </div>
-      <button className="w-full shadow-sm border border-muted-secondary bg-white rounded-lg flex items-center justify-center p-2 hover:bg-muted">
-        <Plus className="text-muted-primary" size={15} />
-      </button>
     </div>
-  </div>
-);
+  );
+};
 
 const App = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -273,7 +295,7 @@ const App = () => {
           {/* Main Editor Content */}
           <div className="flex-1 flex flex-col pb-16 lg:pb-0">
             {/* Editor bar */}
-            <div className="flex flex-wrap gap-1 justify-center items-center px-1.5 bg-white border-b border-zinc-100 h-[2.5rem]">
+            <div className="flex flex-wrap gap-1 justify-center items-center px-1.5 bg-white border-b border-zinc-100 h-[3rem]">
               {toolbarItems.map((item, index) => (
                 <React.Fragment key={item.label}>
                   <ToolbarItem icon={item.icon} label={item.label} />
@@ -309,12 +331,12 @@ const App = () => {
                   exit={{ opacity: 0, x: 300 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="flex justify-between items-center mb-4 px-4 h-[2.5rem] border-b border-muted">
+                  <div className="flex justify-between items-center mb-4 px-4 h-[3rem] border-b border-muted">
                     <h2 className="text-lg text-muted-dark font-medium ">
                       Media
                     </h2>
                     <button
-                      className="text-gray-500 hover:text-gray-700"
+                      className="text-muted-normal hover:bg-muted p-1 rounded-lg"
                       onClick={closeSettingsPanel}
                     >
                       <X size={15} />

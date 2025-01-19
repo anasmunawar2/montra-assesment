@@ -29,6 +29,9 @@ export default {
           light: "#06AED4",
         },
       },
+      fontFamily: {
+        sans: ["Inter", "sans-serif"], // Add Inter as the default sans font
+      },
     },
   },
   // eslint-disable-next-line no-undef
