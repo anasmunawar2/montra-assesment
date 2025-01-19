@@ -7,6 +7,8 @@ import Zoom from "../assets/slider-zoom.svg";
 import Back from "../assets/backward.svg";
 import Next from "../assets/forward.svg";
 import Pause from "../assets/pause.svg";
+import BluePlayer from "../assets/player-blue.svg";
+import PinkPlayer from "../assets/pink-player.svg";
 import React, { useEffect, useState } from "react";
 
 const Player = () => {
@@ -60,7 +62,7 @@ const Player = () => {
         </div>
       </div>
 
-      <div className="flex justify-between font-normal bg-disabled text-[10px] sm:text-xs text-muted-normal border-b py-2 sm:py-3 mb-1 min-w-max">
+      <div className="flex justify-between font-normal bg-disabled text-[10px] sm:text-xs text-muted-normal border-b py-2 sm:py-3 min-w-max">
         {Array.from({ length: numberOfMarkers }).map((_, i) => {
           const minutes = Math.floor(i * (22 / numberOfMarkers) * 2);
           return (
@@ -76,27 +78,25 @@ const Player = () => {
         })}
       </div>
 
-      <div className="p-4">
+      <div className="px-4 py-2">
         <div className="relative">
           <div className="flex flex-col space-y-2">
             <div className="h-[3rem] bg-primary-light relative mb-px rounded-lg">
               <div className="relative w-full h-full">
-                <div className="absolute inset-0">
-                  {Array.from({ length: 200 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="absolute bg-primary-dark"
-                      style={{
-                        left: `${(i / 200) * 100}%`,
-                        height: `${Math.random() * 40 + 20}%`,
-                        width: "0.125rem",
-                        top: "50%",
-                        borderRadius: "20px",
-                        transform: "translateY(-50%)",
-                        opacity: `${i / 25}`,
-                      }}
-                    />
-                  ))}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <img
+                    className="w-full object-cover"
+                    src={BluePlayer}
+                    alt="blue track"
+                    style={{
+                      WebkitMaskImage:
+                        "linear-gradient(to right, transparent 0%, black 9%)",
+                      maskImage:
+                        "linear-gradient(to right, transparent 0%, black 9%)",
+                      WebkitMaskSize: "100% 100%",
+                      maskSize: "100% 100%",
+                    }}
+                  />
                 </div>
               </div>
             </div>
@@ -119,23 +119,21 @@ const Player = () => {
               </Draggable>
             </div>
 
-            <div className="h-[3rem] bg-pink-light relative rounded-lg">
-              <div className="absolute inset-0">
-                {Array.from({ length: 200 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="absolute bg-pink"
-                    style={{
-                      left: `${(i / 200) * 100}%`,
-                      height: `${Math.random() * 40 + 20}%`,
-                      width: "0.125rem",
-                      top: "50%",
-                      borderRadius: "20px",
-                      transform: "translateY(-50%)",
-                      opacity: `${i / 25}`,
-                    }}
-                  />
-                ))}
+            <div className="h-[2rem] bg-pink-light relative rounded-lg">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <img
+                  className="w-full object-cover"
+                  src={PinkPlayer}
+                  alt="pink track"
+                  style={{
+                    WebkitMaskImage:
+                      "linear-gradient(to right, transparent 0%, black 9%)",
+                    maskImage:
+                      "linear-gradient(to right, transparent 0%, black 9%)",
+                    WebkitMaskSize: "100% 100%",
+                    maskSize: "100% 100%",
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -144,13 +142,21 @@ const Player = () => {
             <img src={Indicator} alt="indicator" className="h-48" />
           </div>
 
-          <div className="absolute left-3 top-0">
-            <div className="flex items-center justify-center mb-[3.75rem]">
-              <img src={BlueTrack} />
+          <div className="absolute left-1 top-1">
+            <div className="flex items-center justify-center mb-[3.9rem]">
+              <img
+                src={BlueTrack}
+                alt="Blue Track"
+                className="h-[3rem] w-[3rem] object-contain"
+              />
             </div>
 
             <div className="flex items-center justify-center">
-              <img src={PinkTrack} />
+              <img
+                src={PinkTrack}
+                alt="Pink Track"
+                className="h-[2rem] w-[3rem] object-contain"
+              />
             </div>
           </div>
         </div>

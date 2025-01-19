@@ -21,13 +21,14 @@ import Orientation from "./assets/orientation.svg";
 import Gradient from "./assets/gradient.svg";
 import Opacity from "./assets/opacity.svg";
 import Shadow from "./assets/blur.svg";
+import ChevronLeft from "./assets/chevron-left.svg";
 
-import { ChevronDown, ChevronLeft, MenuIcon, Plus, X } from "lucide-react";
+import { ChevronDown, MenuIcon, Plus, X } from "lucide-react";
 import Player from "./components/Player";
 function ToolbarItem({ icon, label, rightIcon = <ChevronDown /> }) {
   return (
-    <div className="flex overflow-hidden gap-1.5 justify-center items-center self-stretch px-2 py-2 my-auto rounded-md min-h-[1.75rem]">
-      <div className="flex overflow-hidden flex-col justify-center self-stretch px-px py-1 my-auto w-4">
+    <div className="flex gap-1.5 overflow-hidden justify-center items-center self-stretch px-2 my-auto rounded-md">
+      <div className="flex overflow-hidden flex-col justify-center self-stretch px-px py-[0.375rem] my-auto w-[1.5rem] h-[1.5rem]">
         {typeof icon === "string" ? (
           <img
             src={icon}
@@ -132,7 +133,7 @@ const toolbarItems = [
       <img
         src={Orientation}
         alt=""
-        className="object-contain shrink-0 self-stretch my-auto w-4 aspect-square"
+        className="object-contain shrink-0 self-stretch my-auto w-[1.5rem] aspect-square"
       />
     ),
     label: "Orientation",
@@ -142,7 +143,7 @@ const toolbarItems = [
       <img
         src={Gradient}
         alt=""
-        className="object-contain shrink-0 self-stretch my-auto w-4 aspect-square"
+        className="object-contain shrink-0 self-stretch my-auto w-[1.5rem] aspect-square"
       />
     ),
     label: "Background",
@@ -152,7 +153,7 @@ const toolbarItems = [
       <img
         src={Opacity}
         alt=""
-        className="object-contain shrink-0 self-stretch my-auto w-4 aspect-square"
+        className="object-contain shrink-0 self-stretch my-auto w-[1.5rem] aspect-square"
       />
     ),
     label: "Opacity",
@@ -162,7 +163,7 @@ const toolbarItems = [
       <img
         src={Shadow}
         alt=""
-        className="object-contain shrink-0 self-stretch my-auto w-4 aspect-square"
+        className="object-contain shrink-0 self-stretch my-auto w-[1.5rem] aspect-square"
       />
     ),
     label: "Blur",
@@ -170,8 +171,8 @@ const toolbarItems = [
 ];
 
 const Sidebar = () => (
-  <div className="w-[7.625rem] bg-disabled flex-shrink-0 border-r h-full overflow-y-auto">
-    <div className="p-2 space-y-2">
+  <div className="w-[10rem] bg-disabled flex-shrink-0 border-r h-full overflow-y-auto">
+    <div className="p-2 space-y-4">
       <div className="relative group">
         <div className="aspect-video bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer">
           <img
@@ -228,10 +229,10 @@ const App = () => {
 
         {/* Top Navigation */}
         <div className="flex items-center justify-between p-2 sm:p-4 border-b border-muted">
-          <div className="flex items-center flex-1 space-x-2 sm:space-x-4">
-            <button className="flex items-center font-medium text-black text-base sm:text-xl bg-white border border-muted px-2 sm:px-4 py-1 sm:py-2 shadow-md rounded-lg">
-              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span className="ml-1 sm:ml-2 hidden sm:inline">Back</span>
+          <div className="flex items-center flex-1 ">
+            <button className="flex px-2.5 py-1.5 items-center font-medium text-muted-dark text-sm bg-white border border-muted px-2 py-1 - shadow-sm rounded-lg">
+              <img src={ChevronLeft} alt="back" className="w-4 h-4 " />
+              <span className="ml-1 hidden sm:inline">Back</span>
             </button>
           </div>
 
@@ -254,13 +255,9 @@ const App = () => {
               <MenuIcon className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
             <button className="p-1">
-              <img
-                src={Avatar}
-                alt="avatar"
-                className="w-6 h-6 sm:w-12 sm:h-12"
-              />
+              <img src={Avatar} alt="avatar" className="w-[32px] h-[32px]" />
             </button>
-            <button className="px-2 sm:px-4 py-1 sm:py-2 bg-primary text-sm sm:text-base font-medium text-white rounded-xl">
+            <button className="px-2 sm:px-4 py-1.5 px-1.5 bg-primary text-sm font-medium text-white rounded-[0.375rem]">
               Export
             </button>
           </div>
@@ -276,7 +273,7 @@ const App = () => {
           {/* Main Editor Content */}
           <div className="flex-1 flex flex-col pb-16 lg:pb-0">
             {/* Editor bar */}
-            <div className="flex flex-wrap gap-1 justify-center items-center px-1.5 bg-white border-b border-zinc-100">
+            <div className="flex flex-wrap gap-1 justify-center items-center px-1.5 bg-white border-b border-zinc-100 h-[2.5rem]">
               {toolbarItems.map((item, index) => (
                 <React.Fragment key={item.label}>
                   <ToolbarItem icon={item.icon} label={item.label} />
@@ -303,17 +300,16 @@ const App = () => {
 
           {/* Right Panel - Hidden on mobile */}
           <div className="hidden lg:flex">
-            {/* Settings Panel Content */}
             <AnimatePresence>
               {isSettingsPanelVisible && (
                 <motion.div
-                  className="w-80 bg-white border-l border-r border-muted"
-                  initial={{ opacity: 0, x: 300 }} // Initial state: hidden and off to the right
-                  animate={{ opacity: 1, x: 0 }} // Final state: fully visible and in place
-                  exit={{ opacity: 0, x: 300 }} // State when closing: fade and slide out
-                  transition={{ duration: 0.3 }} // Duration of the transition
+                  className="w-[18.75] bg-white border-l border-r border-muted overflow-auto scrollbar-none"
+                  initial={{ opacity: 0, x: 300 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 300 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <div className="flex justify-between items-center mb-4 p-3 border-b border-muted">
+                  <div className="flex justify-between items-center mb-4 px-4 h-[2.5rem] border-b border-muted">
                     <h2 className="text-lg text-muted-dark font-medium ">
                       Media
                     </h2>
@@ -330,8 +326,8 @@ const App = () => {
                   </div>
 
                   {/* Upload Box */}
-                  <div className="px-4 ">
-                    <div className="border-2 bg-disabled border-dashed border-muted rounded-lg p-8 mb-4 text-center">
+                  <div className="px-4">
+                    <div className="border-[0.063rem] bg-disabled border-dashed border-muted rounded-lg p-8 mb-4 text-center hover:bg-white hover:border-primary transition">
                       <img
                         src={UploadIcon}
                         className="mx-auto mb-2 cursor-pointer"
@@ -344,20 +340,15 @@ const App = () => {
                       </p>
                     </div>
                   </div>
+
                   {/* Navigation */}
-                  <div className="flex space-x-6 mb-4 text-sm text-muted-normal font-medium bg-disabled p-4 border border-muted">
-                    <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
+                  <div className="flex space-x-6 mb-4 text-sm text-muted-normal font-medium bg-disabled p-3 border border-muted">
+                    <button className="text-black border bg-white rounded-[1.5rem] px-[0.5rem] py-0.5">
                       Images
                     </button>
-                    <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
-                      Video
-                    </button>
-                    <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
-                      Logo
-                    </button>
-                    <button className="hover:text-black hover:border hover:bg-white hover:rounded-full hover:px-3 transition-all duration-300 ease-in-out">
-                      Unsplash
-                    </button>
+                    <button className="">Video</button>
+                    <button className="">Logo</button>
+                    <button className="">Unsplash</button>
                   </div>
 
                   {/* Media Label */}
@@ -393,7 +384,7 @@ const App = () => {
             </AnimatePresence>
 
             {/* Right Side Icons */}
-            <div className="flex flex-col space-y-2 p-2 bg-disabled">
+            <div className="flex flex-col space-y-2 p-2 border-l border-muted bg-disabled">
               <button
                 className="p-2 hover:bg-muted rounded"
                 onClick={openSettingsPanel}
